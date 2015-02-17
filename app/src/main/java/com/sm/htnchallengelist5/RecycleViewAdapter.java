@@ -52,10 +52,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         }
 
         viewHolder.skillsTextView.setText(skillString);
+
+        new AsyncImageDownloader(viewHolder.mImageView).execute(dataset.get(i).getPicture());
     }
 
     @Override
     public int getItemCount() {
         return dataset.size();
     }
+
+
+
 }

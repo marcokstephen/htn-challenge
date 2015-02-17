@@ -29,13 +29,13 @@ public class MainActivity extends Activity {
         /*List<Skill> skillz = new ArrayList<Skill>();
         skillz.add(new Skill("Android",5));
         skillz.add(new Skill("Python",10));
-        Person p = new Person("Stephen Marcok","http://google.ca","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
+        Person p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/4/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
         attendees.add(p);
-        p = new Person("Stephen Marcok","http://google.ca","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
+        p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/1/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
         attendees.add(p);
-        p = new Person("Stephen Marcok","http://google.ca","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
+        p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/2/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
         attendees.add(p);
-        p = new Person("Stephen Marcok","http://google.ca","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
+        p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/3/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
         attendees.add(p);
         populateRecycler();*/
 
