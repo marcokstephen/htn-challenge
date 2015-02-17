@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">HTNChallengeList5</string>
+    <string name="app_name">HTN Attendees</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="sort_alpha">Alphabetical</string>
+    <string name="sort_distance">Distance to UW</string>
+    <string name="sort_skill">Primary Skill</string>
 </resources>
