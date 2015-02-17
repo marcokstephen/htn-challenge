@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -35,8 +37,33 @@ public class MainActivity extends Activity {
         recyclerView.setAdapter(recycleViewAdapter);
     }
 
+    public static void sortData(int method){
+        //method 1 = alphabetical, method 2 = Distance, method 3 = Skill
+        if (method == 1){
+            Collections.sort(attendees, new Comparator<Person>() {
+                @Override
+                public int compare(Person lhs, Person rhs) {
+                    return lhs.getName().compareTo(rhs.getName());
+                }
+            });
+        } else if (method == 2){
+
+        } else if (method == 3){
+
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.sort_alpha){
+            sortData(1);
+            recycleViewAdapter.notifyDataSetChanged();
+        } else if (id == R.id.sort_distance){
+
+        } else if (id == R.id.sort_skill){
+
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -24,9 +24,16 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected Bitmap doInBackground(String... urls){
-        int first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
-        int last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+        int first;
+        int last;
+        try {
+            first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
+            last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+        } catch (NullPointerException e){
+            return null;
+        }
         if (!(position >= first && position <= last)){
+
             return null;
         } else if (person.getBitpic() != null){ //check to see if a cached version is available
                 return person.getBitpic();
@@ -45,12 +52,12 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        Log.d("OUTPUT","Setting image for " + position);
         if (result != null) person.setBitpic(result);
         int first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
         int last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
         if (position >= first && position <= last) {
             imageView.setImageBitmap(result);
+            Log.d("OUTPUT","Setting image for " + position);
         }
     }
 }
