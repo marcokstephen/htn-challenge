@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
@@ -62,6 +64,13 @@ public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
                     Skill s = new Skill(skillName, skillRating);
                     userSkills.add(s);
                 }
+
+                Collections.sort(userSkills, new Comparator<Skill>() {
+                    @Override
+                    public int compare(Skill lhs, Skill rhs) {
+                        return rhs.getRating() - lhs.getRating();
+                    }
+                });
 
                 Person p = new Person(name, picture, company, email, phone, lat, lon, userSkills);
                 MainActivity.attendees.add(p);

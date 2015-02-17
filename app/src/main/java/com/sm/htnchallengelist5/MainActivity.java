@@ -47,9 +47,19 @@ public class MainActivity extends Activity {
                 }
             });
         } else if (method == 2){
-
+            Collections.sort(attendees, new Comparator<Person>() {
+                @Override
+                public int compare(Person lhs, Person rhs) {
+                    return lhs.getDistanceFromUw() - rhs.getDistanceFromUw();
+                }
+            });
         } else if (method == 3){
-
+            Collections.sort(attendees, new Comparator<Person>() {
+                @Override
+                public int compare(Person lhs, Person rhs) {
+                    return lhs.getFirstSkillString().compareTo(rhs.getFirstSkillString());
+                }
+            });
         }
     }
 
@@ -60,9 +70,11 @@ public class MainActivity extends Activity {
             sortData(1);
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.sort_distance){
-
+            sortData(2);
+            recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.sort_skill){
-
+            sortData(3);
+            recycleViewAdapter.notifyDataSetChanged();
         }
         return super.onOptionsItemSelected(item);
     }
