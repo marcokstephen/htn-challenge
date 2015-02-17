@@ -1,5 +1,7 @@
 package com.sm.htnchallengelist5;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,7 @@ public class Person {
     private double lat;
     private double lon;
     private List<Skill> skills;
+    private Bitmap bitpic;
 
     public Person(String name, String picture, String company, String email, String phone, double lat, double lon, List<Skill> skills) {
         this.name = name;
@@ -25,6 +28,14 @@ public class Person {
         this.lat = lat;
         this.lon = lon;
         this.skills = skills;
+        this.bitpic = null;
+    }
+
+    public void setBitpic(Bitmap pic){
+        this.bitpic = pic;
+    }
+    public Bitmap getBitpic(){
+        return this.bitpic;
     }
 
     public String getName() {

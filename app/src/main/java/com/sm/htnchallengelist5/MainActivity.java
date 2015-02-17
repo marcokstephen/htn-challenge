@@ -1,6 +1,7 @@
 package com.sm.htnchallengelist5;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,19 +28,6 @@ public class MainActivity extends Activity {
         recyclerView.hasFixedSize();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-
-        /*List<Skill> skillz = new ArrayList<Skill>();
-        skillz.add(new Skill("Android",5));
-        skillz.add(new Skill("Python",10));
-        Person p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/4/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
-        attendees.add(p);
-        p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/1/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
-        attendees.add(p);
-        p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/2/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
-        attendees.add(p);
-        p = new Person("Stephen Marcok","http://lorempixel.com/200/200/sports/3/","Waterloo","marcok.stephen@gmail.com","2893148444",0,0,skillz);
-        attendees.add(p);
-        populateRecycler();*/
 
         new DownloadAttendees().execute();
     }

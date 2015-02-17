@@ -40,6 +40,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(RecycleViewAdapter.ViewHolder viewHolder, int i) {
+        viewHolder.mImageView.setImageDrawable(null);
         viewHolder.nameTextView.setText(dataset.get(i).getName());
         viewHolder.emailTextView.setText(dataset.get(i).getEmail());
 
@@ -53,7 +54,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         viewHolder.skillsTextView.setText(skillString);
 
-        new AsyncImageDownloader(viewHolder.mImageView, i).execute(dataset.get(i).getPicture());
+        new AsyncImageDownloader(viewHolder.mImageView, i, dataset.get(i)).execute();
     }
 
     @Override

@@ -12,28 +12,45 @@ import java.io.InputStream;
  * Created by stephen on 15-02-17.
  */
 public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
+
+    private Person person;
     private ImageView imageView;
     private int position;
 
-    public AsyncImageDownloader(ImageView imageView, int position){
+    public AsyncImageDownloader(ImageView imageView, int position, Person p){
         this.imageView = imageView;
         this.position = position;
+        this.person = p;
     }
 
     protected Bitmap doInBackground(String... urls){
-        String url = urls[0];
+        int first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
+        int last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+        if (!(position >= first && position <= last)){
+            return null;
+        } else if (person.getBitpic() != null){ //check to see if a cached version is available
+                return person.getBitpic();
+        }
+
+        String url = person.getPicture();
         Bitmap mIcon11 = null;
         try {
+            Log.d("OUTPUT","Downloading image for " + position);
             InputStream in = new java.net.URL(url).openStream();
             mIcon11 = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
-            Log.e("Error", e.getMessage());
             e.printStackTrace();
         }
         return mIcon11;
     }
 
     protected void onPostExecute(Bitmap result) {
-        imageView.setImageBitmap(result);
+        Log.d("OUTPUT","Setting image for " + position);
+        if (result != null) person.setBitpic(result);
+        int first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
+        int last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+        if (position >= first && position <= last) {
+            imageView.setImageBitmap(result);
+        }
     }
 }
