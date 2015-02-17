@@ -13,16 +13,18 @@ import java.io.InputStream;
  */
 public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
     private ImageView imageView;
+    private int position;
 
-    public AsyncImageDownloader(ImageView imageView){
+    public AsyncImageDownloader(ImageView imageView, int position){
         this.imageView = imageView;
+        this.position = position;
     }
 
     protected Bitmap doInBackground(String... urls){
-        String urldisplay = urls[0];
+        String url = urls[0];
         Bitmap mIcon11 = null;
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
+            InputStream in = new java.net.URL(url).openStream();
             mIcon11 = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
