@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +17,7 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     static List<Person> attendees = new ArrayList<Person>();
+    static List<Person> datasetBackup; //for use when searching
     static RecycleViewAdapter recycleViewAdapter;
     static RecyclerView recyclerView;
     static LinearLayoutManager mLayoutManager;
@@ -75,6 +78,16 @@ public class MainActivity extends Activity {
         } else if (id == R.id.sort_skill){
             sortData(3);
             recycleViewAdapter.notifyDataSetChanged();
+        } else if (id == R.id.menu_search){
+            EditText searchEditText = (EditText) findViewById(R.id.EditTextSearch);
+            if (searchEditText.getVisibility() == View.GONE){
+                datasetBackup = new ArrayList<Person>(attendees); //TODO:
+                searchEditText.setVisibility(View.VISIBLE);
+            } else {
+                searchEditText.setVisibility(View.GONE);
+                attendees = new ArrayList<Person>(datasetBackup);
+                recycleViewAdapter.notifyDataSetChanged(); //resetting to full results
+            }
         }
         return super.onOptionsItemSelected(item);
     }

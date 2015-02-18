@@ -49,7 +49,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         for (int j = 0; j < skills.size(); j++){
             Skill s = skills.get(j);
             String sString = s.getSname() + ": " + s.getRating();
-            skillString += sString + ", ";
+            skillString += sString;
+            if (j != skills.size() - 1){
+                skillString += ", ";
+            }
         }
 
         viewHolder.skillsTextView.setText(skillString);
