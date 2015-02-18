@@ -2,6 +2,8 @@ package com.sm.htnchallengelist5;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,13 +36,31 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         c = this;
 
+
+        /*
+            Initializing the RecyclerView
+         */
         recyclerView = (RecyclerView)findViewById(R.id.RecyclerViewMain);
         recyclerView.hasFixedSize();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(c, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    String phoneNumber = "tel:" + view.getTag();
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse(phoneNumber));
+                    startActivity(callIntent);
+                }
+            })
+        );
+
 
         new DownloadAttendees().execute();
 
+        /*
+            Initializing the Search EditText
+         */
         searchEditText = (EditText) findViewById(R.id.EditTextSearch);
         searchEditText.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
