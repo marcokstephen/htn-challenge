@@ -2,8 +2,6 @@ package com.sm.htnchallengelist5;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +25,7 @@ public class MainActivity extends Activity {
     static RecyclerView recyclerView;
     static LinearLayoutManager mLayoutManager;
     private EditText searchEditText;
-    private Context c;
+    private static Context c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +41,6 @@ public class MainActivity extends Activity {
         recyclerView.hasFixedSize();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(c, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    String phoneNumber = "tel:" + view.getTag();
-                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    callIntent.setData(Uri.parse(phoneNumber));
-                    startActivity(callIntent);
-                }
-            })
-        );
 
 
         new DownloadAttendees().execute();
@@ -76,14 +63,14 @@ public class MainActivity extends Activity {
                         }
                     }
                 }
-                recycleViewAdapter = new RecycleViewAdapter(searchAttendees);
+                recycleViewAdapter = new RecycleViewAdapter(searchAttendees, c);
                 recyclerView.setAdapter(recycleViewAdapter);
             }
         });
     }
 
     public static void populateRecycler(){
-        recycleViewAdapter = new RecycleViewAdapter(attendees);
+        recycleViewAdapter = new RecycleViewAdapter(attendees,c);
         recyclerView.setAdapter(recycleViewAdapter);
     }
 
@@ -127,12 +114,12 @@ public class MainActivity extends Activity {
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.menu_search){
             if (searchEditText.getVisibility() == View.GONE){ //begin search
-                recycleViewAdapter = new RecycleViewAdapter(searchAttendees);
+                recycleViewAdapter = new RecycleViewAdapter(searchAttendees, this);
                 recyclerView.setAdapter(recycleViewAdapter);
                 searchEditText.setVisibility(View.VISIBLE);
             } else { //end search
                 searchEditText.setVisibility(View.GONE);
-                recycleViewAdapter = new RecycleViewAdapter(attendees);
+                recycleViewAdapter = new RecycleViewAdapter(attendees, this);
                 recyclerView.setAdapter(recycleViewAdapter);
             }
         }
