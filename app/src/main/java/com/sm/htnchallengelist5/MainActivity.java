@@ -1,13 +1,17 @@
 package com.sm.htnchallengelist5;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,15 +21,18 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     static List<Person> attendees = new ArrayList<Person>();
-    static List<Person> datasetBackup; //for use when searching
+    static List<Person> searchAttendees = new ArrayList<Person>(); //for use when searching
     static RecycleViewAdapter recycleViewAdapter;
     static RecyclerView recyclerView;
     static LinearLayoutManager mLayoutManager;
+    private EditText searchEditText;
+    private Context c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        c = this;
 
         recyclerView = (RecyclerView)findViewById(R.id.RecyclerViewMain);
         recyclerView.hasFixedSize();
@@ -33,6 +40,26 @@ public class MainActivity extends Activity {
         recyclerView.setLayoutManager(mLayoutManager);
 
         new DownloadAttendees().execute();
+
+        searchEditText = (EditText) findViewById(R.id.EditTextSearch);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                String search = s.toString();
+                searchAttendees = new ArrayList<Person>();
+                if (search.length() != 0) {
+                    for (int i = 0; i < attendees.size(); i++) {
+                        if (attendees.get(i).getName().contains(search)) {
+                            searchAttendees.add(attendees.get(i));
+                        }
+                    }
+                }
+                recycleViewAdapter = new RecycleViewAdapter(searchAttendees);
+                recyclerView.setAdapter(recycleViewAdapter);
+            }
+        });
     }
 
     public static void populateRecycler(){
@@ -79,14 +106,14 @@ public class MainActivity extends Activity {
             sortData(3);
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.menu_search){
-            EditText searchEditText = (EditText) findViewById(R.id.EditTextSearch);
-            if (searchEditText.getVisibility() == View.GONE){
-                datasetBackup = new ArrayList<Person>(attendees); //TODO:
+            if (searchEditText.getVisibility() == View.GONE){ //begin search
+                recycleViewAdapter = new RecycleViewAdapter(searchAttendees);
+                recyclerView.setAdapter(recycleViewAdapter);
                 searchEditText.setVisibility(View.VISIBLE);
-            } else {
+            } else { //end search
                 searchEditText.setVisibility(View.GONE);
-                attendees = new ArrayList<Person>(datasetBackup);
-                recycleViewAdapter.notifyDataSetChanged(); //resetting to full results
+                recycleViewAdapter = new RecycleViewAdapter(attendees);
+                recyclerView.setAdapter(recycleViewAdapter);
             }
         }
         return super.onOptionsItemSelected(item);

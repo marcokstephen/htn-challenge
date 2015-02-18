@@ -79,7 +79,7 @@ public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        MainActivity.sortData(1); //default sort is (1) which is alphabetical
         MainActivity.populateRecycler();
     }
 
