@@ -1,5 +1,8 @@
 package com.sm.htnchallengelist5;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,23 +15,35 @@ import java.util.List;
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
 
     List<Person> dataset;
+    static Context c;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         public ImageView mImageView;
         public TextView nameTextView;
         public TextView emailTextView;
         public TextView skillsTextView;
         public ViewHolder(View v) {
             super(v);
+            v.setOnLongClickListener(this);
             mImageView = (ImageView)v.findViewById(R.id.ImageViewContact);
             nameTextView = (TextView)v.findViewById(R.id.TextViewName);
             emailTextView = (TextView)v.findViewById(R.id.TextViewEmail);
             skillsTextView = (TextView)v.findViewById(R.id.TextViewSkills);
         }
+
+        @Override
+        public boolean onLongClick(View v) {
+            String phoneNumber = "tel:" + v.getTag();
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse(phoneNumber));
+            c.startActivity(callIntent);
+            return true;
+        }
     }
 
-    public RecycleViewAdapter(List<Person> attendees){
+    public RecycleViewAdapter(List<Person> attendees, Context context){
         this.dataset = attendees;
+        this.c = context;
     }
 
     @Override
