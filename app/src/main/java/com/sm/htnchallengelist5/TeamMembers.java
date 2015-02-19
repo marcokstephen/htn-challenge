@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,7 +25,8 @@ public class TeamMembers extends Activity {
     private SharedPreferences prefs;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
-    private List<Person> teamMemberList;
+    public static List<Person> teamMemberList;
+    public static RecycleViewAdapter teamMemberAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,11 @@ public class TeamMembers extends Activity {
             e.printStackTrace();
         }
 
-        RecycleViewAdapter teamMemberAdapter = new RecycleViewAdapter(teamMemberList,RecycleViewAdapter.OnClickMode.REMOVE_TEAM_MEMBER, this);
+        teamMemberAdapter = new RecycleViewAdapter(teamMemberList,RecycleViewAdapter.OnClickMode.REMOVE_TEAM_MEMBER, this);
         recyclerView.setAdapter(teamMemberAdapter);
+    }
+
+    public static void notifyListChanged(){
+        teamMemberAdapter.notifyDataSetChanged();
     }
 }

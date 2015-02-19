@@ -31,7 +31,7 @@ public class Skill{
         JSONObject jSkill = new JSONObject();
         try{
             jSkill.put("name",this.sname);
-            jSkill.put("rating",this.sname);
+            jSkill.put("rating",this.rating);
         } catch (JSONException e){
             e.printStackTrace();
         }
