@@ -24,7 +24,7 @@ public class TeamMembers extends Activity {
 
     private SharedPreferences prefs;
     private RecyclerView recyclerView;
-    private LinearLayoutManager mLayoutManager;
+    public static LinearLayoutManager mLayoutManager;
     public static List<Person> teamMemberList;
     public static RecycleViewAdapter teamMemberAdapter;
 

@@ -159,7 +159,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         viewHolder.skillsTextView.setText(skillString);
 
-        new AsyncImageDownloader(viewHolder.mImageView, i, dataset.get(i)).execute();
+        new AsyncImageDownloader(viewHolder.mImageView, i, dataset.get(i), mode).execute();
     }
 
     @Override

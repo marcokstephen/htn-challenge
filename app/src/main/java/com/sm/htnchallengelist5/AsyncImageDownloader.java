@@ -16,48 +16,62 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
     private Person person;
     private ImageView imageView;
     private int position;
+    private RecycleViewAdapter.OnClickMode mode;
 
-    public AsyncImageDownloader(ImageView imageView, int position, Person p){
+    public AsyncImageDownloader(ImageView imageView, int position, Person p, RecycleViewAdapter.OnClickMode mode){
         this.imageView = imageView;
         this.position = position;
         this.person = p;
+        this.mode = mode;
     }
 
     protected Bitmap doInBackground(String... urls){
-        int first;
-        int last;
+        int first = 0;
+        int last = 0;
         try {
-            first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
-            last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+            if (mode == RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER) {
+                first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
+                last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+            } else if (mode == RecycleViewAdapter.OnClickMode.REMOVE_TEAM_MEMBER){
+                first = TeamMembers.mLayoutManager.findFirstVisibleItemPosition();
+                last = TeamMembers.mLayoutManager.findLastVisibleItemPosition();
+            }
         } catch (NullPointerException e){
             return null;
         }
-        if (!(position >= first && position <= last)){
-
+        if ((position < first-3 || position > last+3) && first != last){
+            Log.d("DOINBACKGROUND","Position " + position + " is not showing, returning null. First = " + first + " and last = " + last);
             return null;
         } else if (person.getBitpic() != null){ //check to see if a cached version is available
                 return person.getBitpic();
+        } else { //no cached version is available, we need to download a new image
+            String url = person.getPicture();
+            Bitmap mIcon11 = null;
+            try {
+                Log.d("DOINBACKGROUND", "Downloading image for " + position);
+                InputStream in = new java.net.URL(url).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
         }
-
-        String url = person.getPicture();
-        Bitmap mIcon11 = null;
-        try {
-            Log.d("OUTPUT","Downloading image for " + position);
-            InputStream in = new java.net.URL(url).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return mIcon11;
     }
 
     protected void onPostExecute(Bitmap result) {
         if (result != null) person.setBitpic(result);
-        int first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
-        int last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+        int first = 0;
+        int last = 0;
+        if (mode == RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER) {
+            first = MainActivity.mLayoutManager.findFirstVisibleItemPosition();
+            last = MainActivity.mLayoutManager.findLastVisibleItemPosition();
+        } else if (mode == RecycleViewAdapter.OnClickMode.REMOVE_TEAM_MEMBER){
+            first = TeamMembers.mLayoutManager.findFirstVisibleItemPosition();
+            last = TeamMembers.mLayoutManager.findLastVisibleItemPosition();
+        }
         if (position >= first && position <= last) {
             imageView.setImageBitmap(result);
-            Log.d("OUTPUT","Setting image for " + position);
+            Log.d("ONPOSTEXECUTE","Setting image for " + position);
         }
     }
 }
