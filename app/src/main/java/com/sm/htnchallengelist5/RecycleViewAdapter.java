@@ -95,7 +95,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                     e.printStackTrace();
                 }
 
-            } else {
+            } else if (doubleTapMode == OnClickMode.REMOVE_TEAM_MEMBER) {
                 //this is the second time it is being clicked, we can execute the double click command
                 Log.d("OUTPUT", "Removing " + nameTextView.getText().toString() + " from team members");
                 Toast.makeText(vhContext,"Removing " + nameTextView.getText().toString() + " from team", Toast.LENGTH_SHORT).show();
