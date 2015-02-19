@@ -2,6 +2,13 @@ package com.sm.htnchallengelist5;
 
 import android.graphics.Bitmap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -31,6 +38,79 @@ public class Person {
         this.skills = skills;
         this.bitpic = null;
         this.distanceFromUw = haversine(lat,lon);
+    }
+
+    public Person(JSONObject jPerson){
+        setVariables(jPerson);
+    }
+
+    public Person(String jsonPerson){
+        try {
+            JSONObject jPerson = new JSONObject(jsonPerson);
+            setVariables(jPerson);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void setVariables(JSONObject jPerson){
+        try{
+            this.name = jPerson.getString("name");
+            this.picture = jPerson.getString("picture");
+            this.company = jPerson.getString("company");
+            this.email = jPerson.getString("email");
+            this.phone = jPerson.getString("phone");
+            this.lat = jPerson.getDouble("latitude");
+            this.lon = jPerson.getDouble("longitude");
+            this.bitpic = null;
+            this.distanceFromUw = haversine(this.lat,this.lon);
+
+            JSONArray jSkills = jPerson.getJSONArray("skills");
+            List<Skill> userSkills = new ArrayList<Skill>();
+            for (int j = 0; j < jSkills.length(); j++) {
+                JSONObject jsonSkill = jSkills.getJSONObject(j);
+                Skill s = new Skill(jsonSkill.toString());
+                userSkills.add(s);
+            }
+
+            sortSkills(userSkills);
+
+            this.skills = userSkills;
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void sortSkills(List<Skill> skillsList){
+        Collections.sort(skillsList, new Comparator<Skill>() {
+            @Override
+            public int compare(Skill lhs, Skill rhs) {
+                return rhs.getRating() - lhs.getRating();
+            }
+        });
+    }
+
+    @Override
+    public String toString() {
+        JSONObject jPerson = new JSONObject();
+        try {
+            jPerson.put("name",this.name);
+            jPerson.put("picture",this.picture);
+            jPerson.put("company",this.company);
+            jPerson.put("email",this.email);
+            jPerson.put("phone",this.phone);
+            jPerson.put("latitude",this.lat);
+            jPerson.put("longitude",this.lon);
+            JSONArray jSkillsArray = new JSONArray();
+            for (int i = 0; i < this.skills.size(); i++){
+                JSONObject jSkill = new JSONObject(this.skills.get(i).toString());
+                jSkillsArray.put(jSkill);
+            }
+            jPerson.put("skills",jSkillsArray);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return jPerson.toString();
     }
 
     public static int haversine(double lat2, double lon2) {

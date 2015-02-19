@@ -2,11 +2,13 @@ package com.sm.htnchallengelist5;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends Activity {
+
+    public enum SortMethod{
+        ALPHABETICAL, DISTANCE, SKILL
+    }
 
     static List<Person> attendees = new ArrayList<Person>();
     static List<Person> searchAttendees = new ArrayList<Person>(); //for use when searching
@@ -42,7 +48,6 @@ public class MainActivity extends Activity {
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
-
         new DownloadAttendees().execute();
 
         /*
@@ -63,34 +68,34 @@ public class MainActivity extends Activity {
                         }
                     }
                 }
-                recycleViewAdapter = new RecycleViewAdapter(searchAttendees, c);
+                recycleViewAdapter = new RecycleViewAdapter(searchAttendees, RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER, c);
                 recyclerView.setAdapter(recycleViewAdapter);
             }
         });
     }
 
     public static void populateRecycler(){
-        recycleViewAdapter = new RecycleViewAdapter(attendees,c);
+        recycleViewAdapter = new RecycleViewAdapter(attendees, RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER, c);
         recyclerView.setAdapter(recycleViewAdapter);
     }
 
-    public static void sortData(int method){
+    public static void sortData(SortMethod method){
         //method 1 = alphabetical, method 2 = Distance, method 3 = Skill
-        if (method == 1){
+        if (method == SortMethod.ALPHABETICAL){
             Collections.sort(attendees, new Comparator<Person>() {
                 @Override
                 public int compare(Person lhs, Person rhs) {
                     return lhs.getName().compareTo(rhs.getName());
                 }
             });
-        } else if (method == 2){
+        } else if (method == SortMethod.DISTANCE){
             Collections.sort(attendees, new Comparator<Person>() {
                 @Override
                 public int compare(Person lhs, Person rhs) {
                     return lhs.getDistanceFromUw() - rhs.getDistanceFromUw();
                 }
             });
-        } else if (method == 3){
+        } else if (method == SortMethod.SKILL){
             Collections.sort(attendees, new Comparator<Person>() {
                 @Override
                 public int compare(Person lhs, Person rhs) {
@@ -104,24 +109,27 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.sort_alpha){
-            sortData(1);
+            sortData(SortMethod.ALPHABETICAL);
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.sort_distance){
-            sortData(2);
+            sortData(SortMethod.DISTANCE);
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.sort_skill){
-            sortData(3);
+            sortData(SortMethod.SKILL);
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.menu_search){
             if (searchEditText.getVisibility() == View.GONE){ //begin search
-                recycleViewAdapter = new RecycleViewAdapter(searchAttendees, this);
+                recycleViewAdapter = new RecycleViewAdapter(searchAttendees,RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER, this);
                 recyclerView.setAdapter(recycleViewAdapter);
                 searchEditText.setVisibility(View.VISIBLE);
             } else { //end search
                 searchEditText.setVisibility(View.GONE);
-                recycleViewAdapter = new RecycleViewAdapter(attendees, this);
+                recycleViewAdapter = new RecycleViewAdapter(attendees,RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER, this);
                 recyclerView.setAdapter(recycleViewAdapter);
             }
+        } else if (id == R.id.menu_group){
+            Intent teamIntent = new Intent(this, TeamMembers.class);
+            startActivity(teamIntent);
         }
         return super.onOptionsItemSelected(item);
     }

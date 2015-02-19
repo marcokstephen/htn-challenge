@@ -48,42 +48,17 @@ public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
             JSONArray jsonUsers = response.getJSONArray("users");
             for (int i = 0; i < jsonUsers.length(); i++) {
                 JSONObject user = jsonUsers.getJSONObject(i);
-                String name = user.getString("name");
-                String picture = user.getString("picture");
-                String company = user.getString("company");
-                String email = user.getString("email");
-                String phone = user.getString("phone");
-                double lat = user.getDouble("latitude");
-                double lon = user.getDouble("longitude");
-                JSONArray skills = user.getJSONArray("skills");
-                List<Skill> userSkills = new ArrayList<Skill>();
-                for (int j = 0; j < skills.length(); j++) {
-                    JSONObject jsonSkill = skills.getJSONObject(j);
-                    String skillName = jsonSkill.getString("name");
-                    int skillRating = jsonSkill.getInt("rating");
-                    Skill s = new Skill(skillName, skillRating);
-                    userSkills.add(s);
-                }
-
-                Collections.sort(userSkills, new Comparator<Skill>() {
-                    @Override
-                    public int compare(Skill lhs, Skill rhs) {
-                        return rhs.getRating() - lhs.getRating();
-                    }
-                });
-
-                Person p = new Person(name, picture, company, email, phone, lat, lon, userSkills);
+                Person p = new Person(user);
                 MainActivity.attendees.add(p);
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        MainActivity.sortData(1); //default sort is (1) which is alphabetical
+        MainActivity.sortData(MainActivity.SortMethod.ALPHABETICAL); //default sort is (1) which is alphabetical
         MainActivity.populateRecycler();
     }
 
-    public static StringBuilder inputStreamToString(InputStream is) {
+    private static StringBuilder inputStreamToString(InputStream is) {
         String line;
         StringBuilder sb = new StringBuilder();
         BufferedReader rd = new BufferedReader(new InputStreamReader(is));

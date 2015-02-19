@@ -4,4 +4,8 @@
     <string name="sort_alpha">Alphabetical</string>
     <string name="sort_distance">Distance to UW</string>
     <string name="sort_skill">Primary Skill</string>
+    <string name="title_activity_team_members">Team Members</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
