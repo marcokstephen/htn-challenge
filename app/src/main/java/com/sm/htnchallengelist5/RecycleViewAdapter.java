@@ -120,7 +120,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
-                TeamMembers.notifyListChanged();
+                TeamMembers.teamMemberAdapter.notifyDataSetChanged();
             }
         }
     }

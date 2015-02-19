@@ -60,7 +60,13 @@ public class TeamMembers extends Activity {
         recyclerView.setAdapter(teamMemberAdapter);
     }
 
-    public static void notifyListChanged(){
-        teamMemberAdapter.notifyDataSetChanged();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
