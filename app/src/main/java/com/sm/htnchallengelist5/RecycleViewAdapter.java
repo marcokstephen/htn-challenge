@@ -25,13 +25,20 @@ import java.util.List;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder> {
 
-    List<Person> dataset;
-    Context c;
-    OnClickMode mode;
-
+    /*
+        This enum is used to distinguish between which RecyclerView the adapter is
+        being used for. ADD_TEAM_MEMBER means that the adapter is being used for the
+        RecyclerView in the MainActivity, and REMOVE_TEAM_MEMBER means that it's being used
+        for the RecyclerView in the TeamActivity (where doubleClicking removes a member
+        from the team)
+     */
     public enum OnClickMode{
         ADD_TEAM_MEMBER, REMOVE_TEAM_MEMBER
     }
+
+    List<Person> dataset;
+    Context c;
+    OnClickMode mode;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public ImageView mImageView;
@@ -56,6 +63,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             skillsTextView = (TextView)v.findViewById(R.id.TextViewSkills);
         }
 
+        /*
+            Starts a telephone callIntent with the person's number
+         */
         @Override
         public boolean onLongClick(View v) {
             String phoneNumber = "tel:" + currentPerson.getPhone();
@@ -65,10 +75,20 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             return true;
         }
 
+        /*
+            Double tapping either adds the person to the team, or removes
+            the person from the team (depending on what mode is set to)
+
+            We determine a doubleClick by checking if onClick is called twice within
+            a 500ms timeframe
+         */
         @Override
         public void onClick(View v) {
             if (!doubleClick) {
-                //this is the first time it is being clicked, set doubleClick to true and reset with a handler
+                /*
+                    This is the first time it is being clicked
+                    Set doubleClick to true and reset with a handler
+                 */
                 doubleClick = true;
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -77,8 +97,20 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                         Log.d("OUTPUT", "Resetting doubleClick to false");
                     }
                 }, 500);
+
             } else if (doubleTapMode == OnClickMode.ADD_TEAM_MEMBER) {
-                //this is the second time it is being clicked, we can execute the double click command
+                /*
+                    This is the second time that the view is being clicked
+
+                    We can add the currentPerson to the team by storing them
+                    in SharedPreferences
+
+                    First we get the current SharedPrefence and convert it to a
+                    JSONArray. We get the person we are adding, convert them to a
+                    JSONObject and add that Object to the Array. Then we convert the
+                    JSONArray back to a string and store the updated String in
+                    SharedPreferences.
+                 */
                 Log.d("OUTPUT", "Adding " + nameTextView.getText().toString() + " from team members");
 
                 Toast.makeText(vhContext,"Adding " + nameTextView.getText().toString() + " to team", Toast.LENGTH_SHORT).show();
@@ -97,7 +129,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 }
 
             } else if (doubleTapMode == OnClickMode.REMOVE_TEAM_MEMBER) {
-                //this is the second time it is being clicked, we can execute the double click command
+                //this is the second time it is being clicked
+                //we can remove the team member from SharedPreferences
                 Log.d("OUTPUT", "Removing " + nameTextView.getText().toString() + " from team members");
                 Toast.makeText(vhContext,"Removing " + nameTextView.getText().toString() + " from team", Toast.LENGTH_SHORT).show();
 
@@ -108,6 +141,14 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 try {
                     JSONArray currentTeamJsonArray = new JSONArray(currentTeamString);
                     for (int i = 0; i < currentTeamJsonArray.length(); i++){
+                        /*
+                            Iterating through the SharedPreference string to find the
+                            specific person that needs to be removed. Then they are
+                            removed from the SharedPreference and the TeamMembers.teamMemberList
+
+                            After removing from the list we call notifyDataSetChanged to update
+                            the RecyclerView.
+                         */
                         JSONObject jsonObject = currentTeamJsonArray.getJSONObject(i);
                         if (jsonObject.getString("name").equals(currentPersonName)){
                             currentTeamJsonArray.remove(i);
@@ -147,6 +188,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         viewHolder.nameTextView.setText(dataset.get(i).getName());
         viewHolder.emailTextView.setText(dataset.get(i).getEmail());
 
+        //Converting the List<Skill> to a string that can be placed within a TextView
         String skillString = "";
         List<Skill> skills = dataset.get(i).getSkills();
         for (int j = 0; j < skills.size(); j++){
@@ -160,6 +202,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         viewHolder.skillsTextView.setText(skillString);
 
+        /*
+            Downloading the image in an AsyncTask and placing it in the view when complete.
+            The AsyncTask will take care of updating the view
+         */
         new AsyncImageDownloader(viewHolder.mImageView, i, dataset.get(i), mode).execute();
     }
 

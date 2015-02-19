@@ -16,6 +16,11 @@ import java.io.InputStream;
 /**
  * Created by stephen on 15-02-17.
  */
+
+/*
+    This class called by RecyclerViewAdapter to download the images for each Person's
+    view in the RecyclerView.
+ */
 public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
     private Person person;
@@ -30,6 +35,19 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
         this.mode = mode;
     }
 
+    /*
+        This method downloads the image and returns it as a Bitmap.
+
+        We perform some checks to ensure that the image actually needs to be downloaded.
+
+        1. Check if the image is appearing on the RecyclerView. For example if we scroll to the 500th
+        element, only download the 500th (and surrounding) elements rather than images 0-500.
+
+        2. Check if we have already downloaded the image. When a download is successful, we
+        cache the image so that it does not need to be downloaded in the future.
+
+        If those checks deem it necessary, we start the download of the image.
+     */
     protected Bitmap doInBackground(String... urls){
         int first = 0;
         int last = 0;
@@ -45,6 +63,8 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
             return null;
         }
         if ((position < first-3 || position > last+3) && first != last){
+            //The position is not showing on the recyclerView. We add a buffer of 3 views
+            //on either side of what is currently visible.
             Log.d("DOINBACKGROUND","Position " + position + " is not showing, returning null. First = " + first + " and last = " + last);
             return null;
         } else if (person.getBitpic() != null){ //check to see if a cached version is available
@@ -63,6 +83,13 @@ public class AsyncImageDownloader extends AsyncTask<String, Void, Bitmap> {
         }
     }
 
+    /*
+        After the image is finished downloading, we check to see if the view is currently
+        being displayed on the RecyclerView. If the view is showing, we update the view by
+        adding in the newly downloaded image. If the view is not showing, we do nothing.
+
+        This prevents images from seemingly randomly changing due to Android reusing views.
+     */
     protected void onPostExecute(Bitmap result) {
         if (result != null) person.setBitpic(result);
         int first = 0;

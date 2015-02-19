@@ -16,6 +16,10 @@ public class Skill{
         this.rating = rating;
     }
 
+    /*
+        Constructor generates a JSONObject from the string and extracts
+        the data to populate this object's fields
+     */
     Skill(String jsonSkill){
         try {
             JSONObject jSkill = new JSONObject(jsonSkill);
@@ -26,6 +30,11 @@ public class Skill{
         }
     }
 
+    /*
+        Used to convert a Skill back into a JSONObject.toString()
+        Used for storing a Person in SharedPreferences (for when the person
+        is being added as a TeamMember)
+     */
     @Override
     public String toString() {
         JSONObject jSkill = new JSONObject();

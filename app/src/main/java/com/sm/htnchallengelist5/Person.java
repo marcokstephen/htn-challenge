@@ -53,6 +53,10 @@ public class Person {
         }
     }
 
+    /*
+        Called by the constructors to extract the data from a JSONObject
+        and populate the fields of this object
+     */
     private void setVariables(JSONObject jPerson){
         try{
             this.name = jPerson.getString("name");
@@ -65,6 +69,9 @@ public class Person {
             this.bitpic = null;
             this.distanceFromUw = haversine(this.lat,this.lon);
 
+            /* A Person can have multiple skills so we need to iterate through
+               those separately
+             */
             JSONArray jSkills = jPerson.getJSONArray("skills");
             List<Skill> userSkills = new ArrayList<Skill>();
             for (int j = 0; j < jSkills.length(); j++) {
@@ -81,6 +88,10 @@ public class Person {
         }
     }
 
+    /*
+        Called by the constructors. This method sorts a Person's skills such that
+        their strongest skill is ordered first
+     */
     private void sortSkills(List<Skill> skillsList){
         Collections.sort(skillsList, new Comparator<Skill>() {
             @Override
@@ -90,6 +101,11 @@ public class Person {
         });
     }
 
+    /*
+        Used to convert a Person back into a JSONObject.toString()
+        This is used for storing a Person in SharedPreferences, to be done
+        if the person is being added to a team.
+     */
     @Override
     public String toString() {
         JSONObject jPerson = new JSONObject();
@@ -113,6 +129,9 @@ public class Person {
         return jPerson.toString();
     }
 
+    /*
+        Haversine function calculates distance to the University of Waterloo in km
+     */
     public static int haversine(double lat2, double lon2) {
         double R = 6372.8; //radius of the earth
         double lat1 = 43.4729555; //lat of waterloo
@@ -128,6 +147,15 @@ public class Person {
         return (int)(R * c);
     }
 
+    /*
+        This method is called by MainActivity.sortData()
+        Used to create a string from a Person object that can be used
+        for sorting.
+
+        ie, Returns Android0 or Android1 or ... or Android9
+        We append (10-rating) instead of the rating itself so that order is maintained
+        For example, 10 > 9 but "10" < "9".
+     */
     public String getFirstSkillString(){
         if (skills.size() > 0){
             int rating = 10 - skills.get(0).getRating();

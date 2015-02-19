@@ -19,6 +19,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/*
+    This class is used to download the JSON data from Firebase
+    and convert the data to a List<Persons> found in MainActivity
+ */
+
 public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
 
     private static final String URL = "https://htn15-interviews.firebaseio.com/.json";
@@ -37,6 +42,11 @@ public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
         return null;
     }
 
+    /*
+        Initialize the list of Persons in MainActivity with the downloaded data.
+        Sorts the data afterwards alphabetically, and then calls the
+        populateRecycler() method to tie the RecyclerView to the data.
+     */
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
@@ -58,6 +68,9 @@ public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
         MainActivity.populateRecycler();
     }
 
+    /*
+        Convert the downloaded data to a usable String
+     */
     private static StringBuilder inputStreamToString(InputStream is) {
         String line;
         StringBuilder sb = new StringBuilder();

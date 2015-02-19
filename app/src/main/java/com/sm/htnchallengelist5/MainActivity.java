@@ -23,6 +23,10 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
+    /*
+        This options that can be used to sort the list of attendees
+        Currently supported: Alphabetical, Distance to UW, Primary Skill
+     */
     public enum SortMethod{
         ALPHABETICAL, DISTANCE, SKILL
     }
@@ -41,7 +45,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         c = this;
 
-
         /*
             Initializing the RecyclerView
          */
@@ -49,19 +52,27 @@ public class MainActivity extends Activity {
         recyclerView.hasFixedSize();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+
+        /*
+            Pairing the Fast Scroller to the RecyclerView
+         */
         VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller)findViewById(R.id.fast_scroller);
         fastScroller.setRecyclerView(recyclerView);
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
 
+        /*
+            Initiating the download of attendees from the Firebase source
+         */
         new DownloadAttendees().execute();
 
         /*
-            Initializing the Search EditText
+            Initializing the Search EditText (becomes visible when search button is pressed)
          */
         searchEditText = (EditText) findViewById(R.id.EditTextSearch);
         searchEditText.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            //Refresh the list of search results whenever the search string is modified
             @Override
             public void afterTextChanged(Editable s) {
                 String search = s.toString();
@@ -79,13 +90,20 @@ public class MainActivity extends Activity {
         });
     }
 
+    /*
+        Called by the AsyncImageDownloader after the download is complete
+        Ties the RecyclerView to the downloaded data
+     */
     public static void populateRecycler(){
         recycleViewAdapter = new RecycleViewAdapter(attendees, RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER, c);
         recyclerView.setAdapter(recycleViewAdapter);
     }
 
+    /*
+        Sorts the dataset according to the specified mode
+        This method is called from within onOptionsMenuSelected
+     */
     public static void sortData(SortMethod method){
-        //method 1 = alphabetical, method 2 = Distance, method 3 = Skill
         if (method == SortMethod.ALPHABETICAL){
             Collections.sort(attendees, new Comparator<Person>() {
                 @Override
@@ -110,6 +128,11 @@ public class MainActivity extends Activity {
         }
     }
 
+    /*
+        Used for specifying the sort method, also used for activating
+        and deactivating the search functionality, as well as to open
+        the TeamMembers activity
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -123,6 +146,8 @@ public class MainActivity extends Activity {
             sortData(SortMethod.SKILL);
             recycleViewAdapter.notifyDataSetChanged();
         } else if (id == R.id.menu_search){
+            //The search button acts as a toggle for the EditText
+            //The onEditTextChanged method is within this activity's onCreate
             if (searchEditText.getVisibility() == View.GONE){ //begin search
                 recycleViewAdapter = new RecycleViewAdapter(searchAttendees,RecycleViewAdapter.OnClickMode.ADD_TEAM_MEMBER, this);
                 recyclerView.setAdapter(recycleViewAdapter);

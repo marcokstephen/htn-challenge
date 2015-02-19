@@ -22,8 +22,6 @@ public class TeamMembers extends Activity {
 
     public static final String PREFERENCE_TEAM_MEMBERS = "com.sm.htnchallengelist5.PREFERENCE_TEAM_MEMBERS";
 
-    private SharedPreferences prefs;
-    private RecyclerView recyclerView;
     public static LinearLayoutManager mLayoutManager;
     public static List<Person> teamMemberList;
     public static RecycleViewAdapter teamMemberAdapter;
@@ -38,11 +36,19 @@ public class TeamMembers extends Activity {
         /*
             Initializing the RecyclerView
          */
+        RecyclerView recyclerView;
         recyclerView = (RecyclerView)findViewById(R.id.RecyclerViewTeam);
         recyclerView.hasFixedSize();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
+        /*
+            Initializing the SharedPreferences, and extracting the current team
+            members from the SharedPreference (as a string). That String is converted
+            to a JSONArray, and we iterate through that array to reconstruct People and
+            add them to the dataset (teamMemberList).
+         */
+        SharedPreferences prefs;
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String teamMembersJsonString = prefs.getString(PREFERENCE_TEAM_MEMBERS, "[]");
         JSONArray teamMembersJsonArray;
@@ -56,6 +62,7 @@ public class TeamMembers extends Activity {
             e.printStackTrace();
         }
 
+        //Ties the recyclerView to the teamMemberList
         teamMemberAdapter = new RecycleViewAdapter(teamMemberList,RecycleViewAdapter.OnClickMode.REMOVE_TEAM_MEMBER, this);
         recyclerView.setAdapter(teamMemberAdapter);
     }
