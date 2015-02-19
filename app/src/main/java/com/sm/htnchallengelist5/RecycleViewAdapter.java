@@ -57,9 +57,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         @Override
         public boolean onLongClick(View v) {
-            String jsonPersonString = v.getTag().toString();
-            Person p = new Person(jsonPersonString);
-            String phoneNumber = "tel:" + p.getPhone();
+            String phoneNumber = "tel:" + currentPerson.getPhone();
             Intent callIntent = new Intent(Intent.ACTION_DIAL);
             callIntent.setData(Uri.parse(phoneNumber));
             vhContext.startActivity(callIntent);
