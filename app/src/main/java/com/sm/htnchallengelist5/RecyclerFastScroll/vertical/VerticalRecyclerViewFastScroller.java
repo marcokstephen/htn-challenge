@@ -1,5 +1,12 @@
 package com.sm.htnchallengelist5.RecyclerFastScroll.vertical;
 
+/*
+    Part of a recent library used for FastScrolling in a RecyclerView (since RecycleView does not
+    have the same fastscroll functionality as a ListView)
+
+     https://github.com/danoz73/RecyclerViewFastScroller
+ */
+
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

@@ -1,7 +1,11 @@
 package com.sm.htnchallengelist5.RecyclerFastScroll.sectionindicator;
 
-import android.support.v7.widget.RecyclerView;
-import android.widget.SectionIndexer;
+/*
+    Part of a recent library used for FastScrolling in a RecyclerView (since RecycleView does not
+    have the same fastscroll functionality as a ListView)
+
+     https://github.com/danoz73/RecyclerViewFastScroller
+ */
 
 /**
  * An indicator for which section a {@link android.support.v7.widget.RecyclerView} is currently in. This is for RecyclerViews whose adapters
