@@ -1,6 +1,9 @@
-package com.sm.htnchallengelist5;
+package com.sm.htnchallengelist5.Downloaders;
 
 import android.os.AsyncTask;
+
+import com.sm.htnchallengelist5.MainActivity;
+import com.sm.htnchallengelist5.Person;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -15,9 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
 
@@ -54,7 +54,7 @@ public class DownloadAttendees extends AsyncTask<Void,Void,Void> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        MainActivity.sortData(MainActivity.SortMethod.ALPHABETICAL); //default sort is (1) which is alphabetical
+        MainActivity.sortData(MainActivity.SortMethod.ALPHABETICAL);
         MainActivity.populateRecycler();
     }
 

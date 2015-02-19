@@ -1,10 +1,15 @@
-package com.sm.htnchallengelist5;
+package com.sm.htnchallengelist5.Downloaders;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.sm.htnchallengelist5.MainActivity;
+import com.sm.htnchallengelist5.Person;
+import com.sm.htnchallengelist5.RecycleViewAdapter;
+import com.sm.htnchallengelist5.TeamMembers;
 
 import java.io.InputStream;
 

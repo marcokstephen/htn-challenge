@@ -8,12 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.sm.htnchallengelist5.Downloaders.DownloadAttendees;
 import com.sm.htnchallengelist5.RecyclerFastScroll.vertical.VerticalRecyclerViewFastScroller;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class MainActivity extends Activity {
         ALPHABETICAL, DISTANCE, SKILL
     }
 
-    static List<Person> attendees = new ArrayList<Person>();
-    static List<Person> searchAttendees = new ArrayList<Person>(); //for use when searching
-    static RecycleViewAdapter recycleViewAdapter;
-    static RecyclerView recyclerView;
-    static LinearLayoutManager mLayoutManager;
+    public static List<Person> attendees = new ArrayList<Person>();
+    public static List<Person> searchAttendees = new ArrayList<Person>(); //for use when searching
+    public static RecycleViewAdapter recycleViewAdapter;
+    public static RecyclerView recyclerView;
+    public static LinearLayoutManager mLayoutManager;
     private EditText searchEditText;
     private static Context c;
 
