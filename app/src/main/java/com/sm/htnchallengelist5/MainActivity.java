@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.sm.htnchallengelist5.RecyclerFastScroll.vertical.VerticalRecyclerViewFastScroller;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,6 +49,9 @@ public class MainActivity extends Activity {
         recyclerView.hasFixedSize();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+        VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller)findViewById(R.id.fast_scroller);
+        fastScroller.setRecyclerView(recyclerView);
+        recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
 
         new DownloadAttendees().execute();
 
