@@ -61,6 +61,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             nameTextView = (TextView)v.findViewById(R.id.TextViewName);
             emailTextView = (TextView)v.findViewById(R.id.TextViewEmail);
             skillsTextView = (TextView)v.findViewById(R.id.TextViewSkills);
+
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent openProfile = new Intent(vhContext,ProfileActivity.class);
+                    String jsonPerson = currentPerson.toString();
+                    openProfile.putExtra(ProfileActivity.PROFILE_ACTIVITY_BUNDLE, jsonPerson);
+                    vhContext.startActivity(openProfile);
+                }
+            });
         }
 
         /*
@@ -189,17 +199,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         viewHolder.emailTextView.setText(dataset.get(i).getEmail());
 
         //Converting the List<Skill> to a string that can be placed within a TextView
-        String skillString = "";
-        List<Skill> skills = dataset.get(i).getSkills();
-        for (int j = 0; j < skills.size(); j++){
-            Skill s = skills.get(j);
-            String sString = s.getSname() + ": " + s.getRating();
-            skillString += sString;
-            if (j != skills.size() - 1){
-                skillString += ", ";
-            }
-        }
-
+        String skillString = dataset.get(i).getSkillString();
         viewHolder.skillsTextView.setText(skillString);
 
         /*

@@ -165,6 +165,22 @@ public class Person {
         }
     }
 
+    /*
+        Used for converting skills into a String that can be placed within a TextView
+     */
+    public String getSkillString(){
+        String skillString = "";
+        for (int j = 0; j < skills.size(); j++){
+            Skill s = skills.get(j);
+            String sString = s.getSname() + ": " + s.getRating();
+            skillString += sString;
+            if (j != skills.size() - 1){
+                skillString += ", ";
+            }
+        }
+        return skillString;
+    }
+
     public int getDistanceFromUw(){
         return this.distanceFromUw;
     }

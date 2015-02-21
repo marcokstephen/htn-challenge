@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.sm.htnchallengelist5.ProfileActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Attendee Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/TextViewProfileName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Company"
+        android:paddingLeft="4dp"
+        android:id="@+id/TextViewProfileCompany"
+        android:layout_below="@+id/TextViewProfileName"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:paddingLeft="4dp"
+        android:id="@+id/TextViewProfileEmail"
+        android:layout_below="@+id/TextViewProfileCompany"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text="Phone"
+        android:id="@+id/TextViewProfilePhone"
+        android:layout_below="@+id/TextViewProfileEmail"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skills"
+        android:paddingLeft="4dp"
+        android:id="@+id/TextViewProfileSkills"
+        android:layout_below="@+id/TextViewProfilePhone"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout style="?android:buttonBarStyle"
+        android:layout_width="match_parent"
+        android:id="@+id/button_bar_bottom_details"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button style="?android:buttonBarButtonStyle"
+            android:id="@+id/ButtonProfileEmail"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Email"/>
+        <Button style="?android:buttonBarButtonStyle"
+            android:id="@+id/ButtonProfileCall"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Call"/>
+    </LinearLayout>
+
+</RelativeLayout>

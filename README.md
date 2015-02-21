@@ -17,3 +17,4 @@
   * Double tap to remove from team (when on the teams page)
 * Long press to open dialer with attendees number pre-programmed
 * Fast scroll through list to browse long lists quicker
+* Click on a person's image to open a more detailed profile with buttons for easy calling or emailing
